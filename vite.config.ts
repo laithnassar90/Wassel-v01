@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      external: ['figma:asset/*'],  // Externalize the Figma assets
+      // Externalize the Figma assets to avoid issues with the build process
+      external: ['figma:asset/*'],
     },
   },
   resolve: {
     alias: {
-      // Alias for 'figma:asset' if you still want to reference it (not recommended for assets like images)
-      // Adjust this if you want a custom resolution method
-      'figma:asset': '/src/assets',  // This example assumes you want to resolve assets from a local directory
+      // Alias for 'figma:asset' to resolve the asset path locally
+      'figma:asset': '/src/assets', // Update this path if your assets are in a different location
     },
   },
 });
