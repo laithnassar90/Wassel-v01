@@ -6,7 +6,7 @@ import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { TripDetailsDialog } from './TripDetailsDialog';
-import { toast } from 'sonner@2.0.3';
+import { toast, Toaster } from 'sonner'; // ✅ fixed import
 
 export function FindRide() {
   const [searchFrom, setSearchFrom] = useState('');
@@ -22,11 +22,14 @@ export function FindRide() {
   };
 
   const handleBookTrip = (tripId: number) => {
-    toast.success('Trip booked successfully! Check "My Trips" for details.');
+    toast.success('✅ Trip booked successfully! Check "My Trips" for details.');
   };
 
   return (
     <div className="max-w-7xl mx-auto space-y-8">
+      {/* Toast Notification Handler */}
+      <Toaster position="top-center" richColors />
+
       {/* Search Section */}
       <Card>
         <CardHeader>
@@ -99,7 +102,6 @@ export function FindRide() {
       {/* Available Rides */}
       <div className="space-y-4">
         <h2>Available Rides</h2>
-        
         <div className="space-y-4">
           {availableRides.map((ride) => (
             <Card key={ride.id} className="hover:shadow-md transition-shadow">
@@ -183,7 +185,7 @@ const availableRides = [
       initials: 'AH',
       rating: 4.8,
       trips: 127,
-      phone: '+971 50 123 4567'
+      phone: '+971 50 123 4567',
     },
     from: 'Dubai',
     to: 'Abu Dhabi',
@@ -191,7 +193,7 @@ const availableRides = [
       { label: 'Dubai Mall', lat: 25.1972, lng: 55.2744 },
       { label: 'Dubai Marina', lat: 25.0805, lng: 55.1396 },
       { label: 'Jebel Ali', lat: 24.9857, lng: 55.0272 },
-      { label: 'Abu Dhabi Downtown', lat: 24.4539, lng: 54.3773 }
+      { label: 'Abu Dhabi Downtown', lat: 24.4539, lng: 54.3773 },
     ],
     date: 'Oct 3, 2025',
     time: '08:00 AM',
@@ -199,7 +201,7 @@ const availableRides = [
     price: 45,
     tripType: 'wasel' as const,
     vehicleModel: 'Toyota Camry 2023',
-    notes: 'Air-conditioned vehicle. Please be on time.'
+    notes: 'Air-conditioned vehicle. Please be on time.',
   },
   {
     id: 2,
@@ -208,15 +210,15 @@ const availableRides = [
       initials: 'SM',
       rating: 4.9,
       trips: 234,
-      phone: '+966 50 987 6543'
+      phone: '+966 50 987 6543',
     },
     from: 'Riyadh',
     to: 'Jeddah',
     stops: [
       { label: 'Riyadh City Center', lat: 24.7136, lng: 46.6753 },
-      { label: 'Al Qassim', lat: 26.3260, lng: 43.9750 },
+      { label: 'Al Qassim', lat: 26.326, lng: 43.975 },
       { label: 'Medina', lat: 24.5247, lng: 39.5692 },
-      { label: 'Jeddah Corniche', lat: 21.5433, lng: 39.1728 }
+      { label: 'Jeddah Corniche', lat: 21.5433, lng: 39.1728 },
     ],
     date: 'Oct 5, 2025',
     time: '06:00 AM',
@@ -224,7 +226,7 @@ const availableRides = [
     price: 120,
     tripType: 'raje3' as const,
     vehicleModel: 'Honda Accord 2024',
-    notes: 'Return trip on Oct 7. Family-friendly ride.'
+    notes: 'Return trip on Oct 7. Family-friendly ride.',
   },
   {
     id: 3,
@@ -233,15 +235,15 @@ const availableRides = [
       initials: 'OA',
       rating: 4.7,
       trips: 98,
-      phone: '+20 10 1234 5678'
+      phone: '+20 10 1234 5678',
     },
     from: 'Cairo',
     to: 'Alexandria',
     stops: [
       { label: 'Cairo Downtown', lat: 30.0444, lng: 31.2357 },
       { label: 'Giza Pyramids', lat: 29.9792, lng: 31.1342 },
-      { label: 'Wadi El Natrun', lat: 30.3833, lng: 30.3500 },
-      { label: 'Alexandria Corniche', lat: 31.2001, lng: 29.9187 }
+      { label: 'Wadi El Natrun', lat: 30.3833, lng: 30.35 },
+      { label: 'Alexandria Corniche', lat: 31.2001, lng: 29.9187 },
     ],
     date: 'Oct 4, 2025',
     time: '10:00 AM',
@@ -249,7 +251,7 @@ const availableRides = [
     price: 35,
     tripType: 'wasel' as const,
     vehicleModel: 'Hyundai Elantra 2023',
-    notes: 'Comfortable ride with refreshments included.'
+    notes: 'Comfortable ride with refreshments included.',
   },
   {
     id: 4,
@@ -258,14 +260,14 @@ const availableRides = [
       initials: 'FA',
       rating: 5.0,
       trips: 156,
-      phone: '+974 5555 1234'
+      phone: '+974 5555 1234',
     },
     from: 'Doha',
     to: 'Al Khor',
     stops: [
-      { label: 'Doha Souq', lat: 25.2867, lng: 51.5310 },
+      { label: 'Doha Souq', lat: 25.2867, lng: 51.531 },
       { label: 'Lusail City', lat: 25.4295, lng: 51.4932 },
-      { label: 'Al Khor Mall', lat: 25.6810, lng: 51.4969 }
+      { label: 'Al Khor Mall', lat: 25.681, lng: 51.4969 },
     ],
     date: 'Oct 3, 2025',
     time: '02:00 PM',
@@ -273,6 +275,6 @@ const availableRides = [
     price: 25,
     tripType: 'wasel' as const,
     vehicleModel: 'Nissan Altima 2024',
-    notes: 'Women and families only. Quiet and safe ride.'
-  }
+    notes: 'Women and families only. Quiet and safe ride.',
+  },
 ];
