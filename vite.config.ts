@@ -24,14 +24,16 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 1500, // raise the warning limit to avoid false warnings
+    chunkSizeWarningLimit: 1500, // avoid warnings for large chunks
   },
   server: {
-    host: true, // listen on all interfaces
-    port: 5173,
+    host: '0.0.0.0', // listen on all interfaces (required by Render)
+    port: Number(process.env.PORT) || 5173, // use Render-assigned port
     strictPort: true,
-    allowedHosts: [
-      'wassel-cursor-agents.onrender.com', // add Render hostname
-    ],
+    allowedHosts: ['wassel-cursor-agents.onrender.com'],
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: Number(process.env.PORT) || 4173, // preview port
   },
 });
