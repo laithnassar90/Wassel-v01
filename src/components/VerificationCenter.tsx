@@ -19,7 +19,7 @@ import {
   Clock,
   XCircle
 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 type VerificationStatus = 'not_started' | 'pending' | 'approved' | 'rejected';
 
@@ -97,14 +97,11 @@ export function VerificationCenter() {
 
   const handleVerify = (id: string) => {
     const verification = verifications.find(v => v.id === id);
-    
     if (!verification) return;
 
     if (id === 'phone' || id === 'email') {
-      // Simulate instant verification for phone/email
       toast.success(`${verification.name} verification sent!`);
     } else {
-      // Simulate file upload
       setUploadProgress(0);
       const interval = setInterval(() => {
         setUploadProgress(prev => {
@@ -160,7 +157,7 @@ export function VerificationCenter() {
         </div>
       </div>
 
-      {/* Progress Overview */}
+      {/* Progress */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -175,81 +172,39 @@ export function VerificationCenter() {
         <Progress value={completionPercentage} className="h-3" />
       </Card>
 
-      {/* Benefits */}
-      <Card className="p-6 bg-primary/5 border-primary">
-        <h3 className="mb-3">Why Verify Your Account?</h3>
-        <div className="grid md:grid-cols-2 gap-3">
-          <div className="flex items-start gap-2">
-            <CheckCircle className="size-5 text-primary mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-semibold">Build Trust</p>
-              <p className="text-sm text-muted-foreground">Verified profiles get 3x more bookings</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="size-5 text-primary mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-semibold">Higher Rankings</p>
-              <p className="text-sm text-muted-foreground">Appear first in search results</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="size-5 text-primary mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-semibold">Unlock Features</p>
-              <p className="text-sm text-muted-foreground">Access premium features and offers</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2">
-            <CheckCircle className="size-5 text-primary mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-semibold">Safety Badge</p>
-              <p className="text-sm text-muted-foreground">Display verified badge on your profile</p>
-            </div>
-          </div>
-        </div>
-      </Card>
-
       {/* Verification Items */}
       <div className="space-y-4">
-        {verifications.map(verification => {
-          const Icon = verification.icon;
-          const statusColor = getStatusColor(verification.status);
+        {verifications.map(v => {
+          const Icon = v.icon;
+          const statusColor = getStatusColor(v.status);
 
           return (
-            <Card key={verification.id} className="p-6">
+            <Card key={v.id} className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
-                {/* Icon */}
                 <div className={`size-14 rounded-full bg-muted flex items-center justify-center flex-shrink-0 ${statusColor}`}>
                   <Icon className="size-7" />
                 </div>
-
-                {/* Content */}
                 <div className="flex-1 space-y-3">
                   <div>
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <h3>{verification.name}</h3>
-                      {verification.required && (
-                        <Badge variant="outline" className="text-xs">Required</Badge>
-                      )}
-                      {getStatusBadge(verification.status)}
+                      <h3>{v.name}</h3>
+                      {v.required && <Badge variant="outline" className="text-xs">Required</Badge>}
+                      {getStatusBadge(v.status)}
                     </div>
-                    <p className="text-sm text-muted-foreground">{verification.description}</p>
-                    <p className="text-sm text-muted-foreground" dir="rtl">{verification.descriptionAr}</p>
+                    <p className="text-sm text-muted-foreground">{v.description}</p>
+                    <p className="text-sm text-muted-foreground" dir="rtl">{v.descriptionAr}</p>
                   </div>
 
-                  {/* Rejection Reason */}
-                  {verification.status === 'rejected' && verification.rejectionReason && (
+                  {v.status === 'rejected' && v.rejectionReason && (
                     <div className="flex items-start gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
                       <AlertCircle className="size-5 text-destructive mt-0.5 flex-shrink-0" />
                       <div>
                         <p className="text-sm font-semibold text-destructive">Verification Rejected</p>
-                        <p className="text-sm text-muted-foreground">{verification.rejectionReason}</p>
+                        <p className="text-sm text-muted-foreground">{v.rejectionReason}</p>
                       </div>
                     </div>
                   )}
 
-                  {/* Upload Progress */}
                   {uploadProgress > 0 && uploadProgress < 100 && (
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
@@ -260,27 +215,20 @@ export function VerificationCenter() {
                     </div>
                   )}
 
-                  {/* Actions */}
                   <div className="flex gap-2 flex-wrap">
-                    {verification.status === 'not_started' && (
-                      <Button onClick={() => handleVerify(verification.id)}>
+                    {(v.status === 'not_started' || v.status === 'rejected') && (
+                      <Button onClick={() => handleVerify(v.id)}>
                         <Upload className="size-4 mr-2" />
-                        Start Verification
+                        {v.status === 'not_started' ? 'Start Verification' : 'Retry Verification'}
                       </Button>
                     )}
-                    {verification.status === 'rejected' && (
-                      <Button onClick={() => handleVerify(verification.id)}>
-                        <Upload className="size-4 mr-2" />
-                        Retry Verification
-                      </Button>
-                    )}
-                    {verification.status === 'pending' && (
+                    {v.status === 'pending' && (
                       <Button variant="outline" disabled>
                         <Clock className="size-4 mr-2" />
                         Under Review (1-2 days)
                       </Button>
                     )}
-                    {verification.status === 'approved' && (
+                    {v.status === 'approved' && (
                       <Button variant="outline" disabled>
                         <CheckCircle className="size-4 mr-2" />
                         Verified
@@ -293,23 +241,6 @@ export function VerificationCenter() {
           );
         })}
       </div>
-
-      {/* Security Notice */}
-      <Card className="p-6 bg-muted/50">
-        <div className="flex items-start gap-3">
-          <Shield className="size-6 text-primary flex-shrink-0 mt-1" />
-          <div>
-            <h4>Your Privacy & Security</h4>
-            <p className="text-sm text-muted-foreground mt-1">
-              All documents are encrypted and stored securely. We never share your personal information with other users. 
-              Verification is done by our trusted team and automated systems following strict privacy guidelines.
-            </p>
-            <p className="text-sm text-muted-foreground mt-2" dir="rtl">
-              جميع المستندات مشفرة ومخزنة بشكل آمن. نحن لا نشارك معلوماتك الشخصية مع المستخدمين الآخرين أبدًا.
-            </p>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 }
