@@ -55,9 +55,9 @@
     "vite": "^4.5.14"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0 --port 5173", 
     "build": "vite build",
-    "start": "vite preview",
+    "start": "vite preview --host 0.0.0.0 --port $PORT",
     "predeploy": "npm run build",
     "deploy": "npm run start"
   }
