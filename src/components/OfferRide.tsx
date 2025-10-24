@@ -7,7 +7,7 @@ import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { MapComponent } from './MapComponent';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface Stop {
   label: string;
