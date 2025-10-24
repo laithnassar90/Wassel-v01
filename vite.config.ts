@@ -1,25 +1,19 @@
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import path from 'path';
+import react from '@vitejs/plugin-react';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    alias: {
-      // Your aliases...
+  build: {
+    rollupOptions: {
+      external: ['figma:asset/*'],  // Externalize the Figma assets
     },
   },
-  build: {
-    target: 'esnext',
-    outDir: 'build',
-  },
-  server: {
-    host: '0.0.0.0',  // Bind to all IPs
-    port: process.env.PORT || 3000,  // Use Render's PORT environment variable or fallback to 3000
-    open: true,
-    allowedHosts: [
-      'wassel-cursor-agents.onrender.com', // Add the allowed host here
-    ],
+  resolve: {
+    alias: {
+      // Alias for 'figma:asset' if you still want to reference it (not recommended for assets like images)
+      // Adjust this if you want a custom resolution method
+      'figma:asset': '/src/assets',  // This example assumes you want to resolve assets from a local directory
+    },
   },
 });
